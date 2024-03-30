@@ -1,0 +1,34 @@
+#use "readfile.c0"
+int count_vocab(string[] vocab, int[] freq, int v, string filename, bool fast)
+//@requires v == \length(vocab) && v == \length(freq);
+//@requires is_sorted(vocab, 0, v);
+//@ensures \result >= 0;
+//@ensures v == \length(vocab) && v == \length(freq);
+{
+  int occur = 0;
+  string_bundle read_c = read_words(filename);
+  int length_c = string_bundle_length(read_c);
+  string[] array_c = string_bundle_array(read_c);
+
+  for (int i = 0; i < length_c; i++)
+  //@loop_invariant i >=0 && i <= length_c;
+  {
+    if (fast == false) //线性搜索算法
+    {
+      if (linsearch(array_c[i], vocab, v) == -1) { 
+        occur++;
+      } 
+      else { 
+        freq[linsearch(array_c[i], vocab, v)]++; }
+    } 
+    else if (fast == true) //二分搜索算法
+    {
+      if (binsearch(array_c[i], vocab, v) == -1) { 
+        occur++;
+      } 
+      else { 
+        freq[binsearch(array_c[i], vocab, v)]++; }
+    }
+  }
+  return occur;
+}

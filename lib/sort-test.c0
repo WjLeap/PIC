@@ -1,0 +1,34 @@
+#use <string>
+#use <conio>
+
+void print(string[] A, int a)
+//@requires a == \length(A);
+{
+    for (int i = 0; i < a; i++)
+    //@loop_invariant 0 <= i && i <= a;
+    {
+        string s = string_fromint(i);
+        s = string_join(s, " : ");
+        s = string_join(s, A[i]);
+        println(s);
+    }
+}
+
+int main()
+{
+    
+    int a = 4;
+    string[] A = alloc_array(string, a);
+    A[0] = "aaaa";
+    A[1] = "a";
+    A[2] = "bb";
+    A[3] = "ac";
+    println("Before sort :");
+    print(A, a);
+    sort(A, 0, a);
+    println("After sort :");
+    print(A, a);
+    println("After sort :");
+    print(A, a);
+    return 0;
+}

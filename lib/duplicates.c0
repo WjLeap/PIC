@@ -1,0 +1,71 @@
+
+/*其中n代表A的一个子数组的长度。
+在给出的数组所有元素串不相同时这个函数返回true否则返回false*/
+bool all_distinct(string[] A, int n)
+//@requires 0 <= n && n <= \length(A);
+//@requires is_sorted(A, 0, n);
+{
+    for(int i=0;i<n-1;i++)
+    //@loop_invariant 0<=i&&i<=\length(A)-1;
+    { 
+        if(string_equal(A[i],A[i+1]))
+        {  
+            return false;
+        }
+        
+    }
+    return true;
+}
+
+/*其中n代表A的一个子数组的长度。这个函数能够返回这个数组中不同元素串的数目
+（如果同样的元素在这个数组中出现了不止一次，那么对于这个元素只记一次）。*/
+int count_distinct(string[] A, int n)
+//@requires 0 <= n&& n <= \length(A);
+//@requires is_sorted(A, 0, n);
+//@ensures \result<=\length(A);
+{
+    int c=0;
+    for(int i=0;i<n-1;i++)
+    //@loop_invariant 0<=i&&i<=\length(A)-1;
+    { 
+        if(!string_equal(A[i],A[i+1]))
+        {  
+            c++;
+        }
+        
+    }
+    return c;
+}
+/*其中n代表A的一个子数组的长度。在传到这个函数之前这个串需要先排序。
+这个函数应当返回一个仅包含原数组中每个不同元素的新数组，且新数组也得是有序的。
+执行 string[] B = remove_duplicates(A,8)应当返回这个数组*/
+string[] remove_duplicates(string[] A, int n)
+//@requires 0 <=n && n <= \length(A);
+//@requires is_sorted(A, 0 ,n);
+//@ensures is_sorted(\result,0,\length(\result));
+//@ensures \length(\result)>=0&&\length(\result)<=n;
+//@ensures all_distinct(\result,\length(\result));
+//@ensures count_distinct(\result,\length(\result))==\length(\result);
+{
+    int len=count_distinct(A,n);
+    string[] b=alloc_array(string,len);
+    
+    int j = 0;
+    for (int i = 0; i < n; i++)
+    //@loop_invariant 0 <= i && i <= n;
+    //@loop_invariant 0 <= j && j <= len && j <= i;
+    {
+        if (j == 0)
+        {
+            b[j] = A[i];
+            j++;
+        }
+        else if (!string_equal(b[j-1], A[i]))
+        {
+            b[j] = A[i];
+            j++;
+        }
+    }
+    //@assert(j == len);
+    return b;
+}
